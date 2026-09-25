@@ -3,12 +3,12 @@
   "name": "Kisan Dost - Farmer Assistance App",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/188/188333.png",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/188/188333.png",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "512x512"
     }
