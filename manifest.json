@@ -1,0 +1,21 @@
+{
+  "short_name": "Kisan Dost",
+  "name": "Kisan Dost - Farmer Assistance App",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/188/188333.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/188/188333.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#12372A",
+  "theme_color": "#12372A",
+  "display": "standalone",
+  "orientation": "portrait"
+}
