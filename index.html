@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kisan Dost - Urgent Farm Machinery & Services Booking</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Inter & Noto Sans Telugu/Hindi -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f2f9f1',
+                            100: '#e1f2e0',
+                            500: '#2d6a4f',
+                            600: '#1b4332',
+                            700: '#081c15',
+                            accent: '#d4a373',
+                            amber: '#e9c46a',
+                            emergency: '#e63946'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Telugu', 'Noto Sans Devanagari', sans-serif;
+            background-color: #f4f7f2;
+            color: #1a2e22;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #e1f2e0;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2d6a4f;
+            border-radius: 4px;
+        }
+
+        .pulse-emergency {
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.6); }
+            70% { box-shadow: 0 0 0 10px rgba(230, 57, 70, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); }
+        }
+
+        .splash-fade {
+            transition: opacity 0.8s ease-in-out, visibility 0.8s;
+        }
+    </style>
+</head>
+<body class="bg-emerald-50/40 text-slate-800 min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+
+    <!-- SPLASH SCREEN -->
+    <div id="splashScreen" class="fixed inset-0 z-50 bg-gradient-to-br from-brand-600 via-brand-500 to-emerald-900 flex flex-col items-center justify-center text-white splash-fade">
+        <div class="text-center p-6 space-y-4">
+            <div class="relative inline-block">
+                <div class="w-28 h-28 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border-2 border-amber-300/40 shadow-2xl animate-pulse">
+                    <i class="fa-solid fa-tractor text-5xl text-amber-300"></i>
+                </div>
+                <div class="absolute -bottom-1 -right-1 bg-amber-400 text-brand-700 p-2 rounded-full text-xs font-bold shadow">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+            </div>
+            <div>
+                <h1 class="text-4xl font-extrabold tracking-tight text-white mb-1">
+                    Kisan Dost <span class="text-amber-300">किसान दोस्त</span>
+                </h1>
+                <p class="text-emerald-100 font-medium text-sm sm:text-base max-w-xs mx-auto">
+                    Urgent Farm Machinery & Services On-Demand
+                </p>
+            </div>
+            <div class="pt-6 flex justify-center items-center space-x-2">
+                <div class="w-2.5 h-2.5 bg-amber-300 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+                <div class="w-2.5 h-2.5 bg-amber-300 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                <div class="w-2.5 h-2.5 bg-amber-300 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="appContainer" class="hidden min-h-screen flex flex-col">
+
+        <!-- TOP NAVBAR -->
+        <header class="bg-brand-600 text-white sticky top-0 z-30 shadow-md">
+            <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+                <!-- Brand Header -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('dashboard')">
+                    <div class="w-10 h-10 bg-amber-400 rounded-xl flex items-center justify-center text-brand-700 shadow font-bold text-xl">
+                        <i class="fa-solid fa-tractor"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight tracking-wide flex items-center gap-2">
+                            <span>Kisan Dost</span>
+                            <span class="bg-emerald-800 text-emerald-200 text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase">Telangana</span>
+                        </h1>
+                        <p class="text-xs text-emerald-200 font-light" id="navSubtitle">Fast Agricultural Services</p>
+                    </div>
+                </div>
+
+                <!-- Right Controls: Location & Language & Profile -->
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    <!-- Language Selector Dropdown -->
+                    <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-brand-700 text-emerald-100 text-xs rounded-lg px-2 py-1.5 border border-brand-500 focus:outline-none focus:ring-1 focus:ring-amber-300 cursor-pointer">
+                        <option value="en">English</option>
+                        <option value="te">తెలుగు (Telugu)</option>
+                        <option value="hi">हिंदी (Hindi)</option>
+                    </select>
+
+                    <!-- User Profile Button -->
+                    <button onclick="navigateTo('profile')" class="flex items-center justify-center w-9 h-9 rounded-full bg-emerald-700 border border-emerald-500 text-white hover:bg-emerald-600 transition shadow">
+                        <i class="fa-solid fa-user text-sm"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Location Bar (Post-login info) -->
+            <div id="userLocationBar" class="hidden bg-brand-700 text-xs text-emerald-100 py-1.5 px-4 border-t border-brand-500/30">
+                <div class="max-w-5xl mx-auto flex items-center justify-between">
+                    <div class="flex items-center space-x-2 truncate">
+                        <i class="fa-solid fa-location-dot text-amber-400"></i>
+                        <span id="navLocationText" class="font-medium truncate">Select District & Mandal</span>
+                    </div>
+                    <button onclick="openLocationChangeModal()" class="text-amber-300 hover:underline font-semibold text-[11px] shrink-0 ml-2">
+                        <i class="fa-solid fa-pen text-[10px] mr-1"></i><span id="changeLocText">Change</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN VIEW WRAPPER -->
+        <main class="flex-grow max-w-5xl w-full mx-auto p-4 sm:p-6">
+
+            <!-- VIEW 1: REGISTRATION / LOGIN VIEW -->
+            <section id="authView" class="max-w-md mx-auto my-4 sm:my-8 bg-white rounded-2xl shadow-xl border border-emerald-100 overflow-hidden">
+                <div class="bg-gradient-to-r from-brand-600 to-emerald-700 p-6 text-white text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 backdrop-blur-sm">
+                        <i class="fa-solid fa-id-card text-3xl text-amber-300"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold" id="authTitle">Farmer Registration</h2>
+                    <p class="text-xs text-emerald-100 mt-1" id="authSubtitle">Register once to instantly book machinery & services</p>
+                </div>
+
+                <form id="authForm" onsubmit="handleRegistration(event)" class="p-6 space-y-4">
+                    <!-- Name Input -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" id="labelName">Full Name</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                                <i class="fa-solid fa-user-gear"></i>
+                            </span>
+                            <input type="text" id="regName" oninput="validateName()" placeholder="e.g. Ramesh Kumar" 
+                                class="w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
+                        </div>
+                        <p id="nameError" class="hidden text-xs text-rose-600 mt-1 font-medium"><i class="fa-solid fa-circle-exclamation mr-1"></i>Name must contain letters only.</p>
+                    </div>
+
+                    <!-- Mobile Input -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" id="labelMobile">Mobile Number</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">+91</span>
+                            <input type="tel" id="regMobile" maxlength="10" oninput="validateMobile()" placeholder="10 digit number" 
+                                class="w-full pl-12 pr-3 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
+                        </div>
+                        <p id="mobileError" class="hidden text-xs text-rose-600 mt-1 font-medium"><i class="fa-solid fa-circle-exclamation mr-1"></i>Must be exactly 10 numeric digits.</p>
+                    </div>
+
+                    <!-- District Dropdown -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" id="labelDistrict">District</label>
+                        <select id="regDistrict" onchange="handleDistrictChange(this.value)" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none bg-white">
+                            <option value="">-- Select Telangana District --</option>
+                        </select>
+                        <p id="districtError" class="hidden text-xs text-rose-600 mt-1 font-medium"><i class="fa-solid fa-circle-exclamation mr-1"></i>Please select your district.</p>
+                    </div>
+
+                    <!-- Mandal Dropdown -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" id="labelMandal">Mandal</label>
+                        <select id="regMandal" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none bg-white disabled:bg-slate-100 disabled:cursor-not-allowed" disabled>
+                            <option value="">-- Select District First --</option>
+                        </select>
+                        <p id="mandalError" class="hidden text-xs text-rose-600 mt-1 font-medium"><i class="fa-solid fa-circle-exclamation mr-1"></i>Please select your mandal.</p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="btnRegister" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl shadow-lg transition duration-200 flex items-center justify-center space-x-2 group">
+                        <span id="btnRegisterText">Complete Registration & Enter</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </form>
+            </section>
+
+
+            <!-- VIEW 2: MAIN DASHBOARD -->
+            <section id="dashboardView" class="hidden space-y-6">
+                <!-- EMERGENCY BOOKING BANNER (Rapido urgent harvest style) -->
+                <div class="bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 rounded-2xl p-5 text-white shadow-xl relative overflow-hidden pulse-emergency">
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div class="space-y-1 max-w-xl">
+                            <div class="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-amber-200">
+                                <i class="fa-solid fa-bolt text-amber-300 animate-bounce"></i>
+                                <span id="emergBadge">Urgent Harvest Priority</span>
+                            </div>
+                            <h2 class="text-xl sm:text-2xl font-black text-white" id="emergTitle">Urgent Farm Booking Required?</h2>
+                            <p class="text-xs sm:text-sm text-red-50 font-light" id="emergDesc">Need immediate machinery or mechanics for sudden crop harvesting or repairs? Get matched with nearby providers within 15-30 minutes.</p>
+                        </div>
+                        <button onclick="triggerEmergencyMode()" class="w-full md:w-auto bg-amber-400 hover:bg-amber-300 text-brand-700 font-extrabold px-6 py-3 rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm flex items-center justify-center space-x-2 shrink-0">
+                            <i class="fa-solid fa-truck-fast text-lg"></i>
+                            <span id="btnEmergAction">Emergency Express Search</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CATEGORY TAB SELECTION: Machineries vs Services -->
+                <div class="flex bg-white rounded-2xl p-1.5 shadow-md border border-slate-200">
+                    <button id="tabMachineries" onclick="switchCategoryTab('machineries')" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm sm:text-base transition duration-200 flex items-center justify-center space-x-2 bg-brand-600 text-white shadow">
+                        <i class="fa-solid fa-tractor"></i>
+                        <span id="tabMachineryLabel">Machineries</span>
+                    </button>
+                    <button id="tabServices" onclick="switchCategoryTab('services')" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm sm:text-base transition duration-200 flex items-center justify-center space-x-2 text-slate-600 hover:text-brand-600 hover:bg-slate-50">
+                        <i class="fa-solid fa-wrench"></i>
+                        <span id="tabServicesLabel">Services & Mechanics</span>
+                    </button>
+                </div>
+
+                <!-- MACHINERY CATEGORIES GRID -->
+                <div id="machineryCategoryGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- Dynamic Grid items injected via JS -->
+                </div>
+
+                <!-- SERVICES CATEGORIES GRID -->
+                <div id="servicesCategoryGrid" class="hidden grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
+                    <!-- Dynamic Grid items injected via JS -->
+                </div>
+            </section>
+
+
+            <!-- VIEW 3: PROVIDER LISTINGS (Search Results) -->
+            <section id="listingsView" class="hidden space-y-5">
+                <!-- Breadcrumb & Back -->
+                <div class="flex items-center justify-between bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <button onclick="navigateTo('dashboard')" class="text-sm font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-2">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span id="btnBackToCat">Back to Categories</span>
+                    </button>
+                    <div class="text-right">
+                        <h2 id="listingCategoryTitle" class="text-base font-bold text-slate-800">Harvester</h2>
+                        <p id="listingCount" class="text-xs text-slate-500">6 available near your location</p>
+                    </div>
+                </div>
+
+                <!-- Filter Controls -->
+                <div class="flex flex-wrap items-center justify-between gap-2 bg-emerald-50/60 p-3 rounded-xl border border-emerald-100 text-xs">
+                    <span class="font-bold text-slate-700 flex items-center gap-1">
+                        <i class="fa-solid fa-filter text-brand-500"></i> Filter:
+                    </span>
+                    <div class="flex gap-2 overflow-x-auto py-1">
+                        <button onclick="filterProviders('all')" class="bg-brand-600 text-white px-3 py-1 rounded-full font-medium">All Providers</button>
+                        <button onclick="filterProviders('distance')" class="bg-white border border-slate-300 text-slate-700 px-3 py-1 rounded-full font-medium hover:bg-slate-100">Nearest First (&lt; 5 km)</button>
+                        <button onclick="filterProviders('rating')" class="bg-white border border-slate-300 text-slate-700 px-3 py-1 rounded-full font-medium hover:bg-slate-100">Top Rated (4.5+ ★)</button>
+                    </div>
+                </div>
+
+                <!-- Providers List Container -->
+                <div id="providersList" class="space-y-4">
+                    <!-- Provider cards populated dynamically -->
+                </div>
+            </section>
+
+
+            <!-- VIEW 4: USER PROFILE / SETTINGS -->
+            <section id="profileView" class="hidden space-y-6">
+                <!-- Back Button -->
+                <button onclick="navigateTo('dashboard')" class="text-sm font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-2">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span id="btnBackProfile">Back to Dashboard</span>
+                </button>
+
+                <!-- Profile Card -->
+                <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 rounded-full bg-brand-500 text-amber-300 flex items-center justify-center font-bold text-2xl shadow">
+                            <i class="fa-solid fa-user-large"></i>
+                        </div>
+                        <div>
+                            <h2 id="profUserName" class="text-xl font-bold text-slate-800">Farmer Name</h2>
+                            <p id="profUserMobile" class="text-xs text-slate-500">+91 0000000000</p>
+                            <p class="text-xs text-brand-600 font-semibold mt-1 flex items-center gap-1">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span id="profUserLocation">District, Mandal</span>
+                            </p>
+                        </div>
+                    </div>
+                    <button onclick="openLocationChangeModal()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-4 py-2 rounded-xl transition border border-slate-300">
+                        <i class="fa-solid fa-pen-to-square mr-1"></i> Edit Location
+                    </button>
+                </div>
+
+                <!-- User Bookings History Tabs -->
+                <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 space-y-4">
+                    <h3 class="text-base font-bold text-slate-800 flex items-center space-x-2">
+                        <i class="fa-solid fa-clock-rotate-left text-brand-500"></i>
+                        <span id="titleBookingHist">My Emergency Bookings & Service Requests</span>
+                    </h3>
+
+                    <div id="userBookingsList" class="space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- MY SUBMITTED REVIEWS & RATINGS -->
+                <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 space-y-4">
+                    <h3 class="text-base font-bold text-slate-800 flex items-center space-x-2">
+                        <i class="fa-solid fa-star text-amber-500"></i>
+                        <span>My Given Ratings & Reviews</span>
+                    </h3>
+                    <div id="userReviewsList" class="space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Logout Card -->
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-800">Logout Account</h4>
+                        <p class="text-xs text-slate-500">Switch user or change registration details</p>
+                    </div>
+                    <button onclick="logoutUser()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold px-4 py-2 rounded-xl text-xs transition border border-rose-200">
+                        <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- MODAL 1: REGISTRATION SUCCESS -->
+        <div id="modalRegSuccess" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl transform scale-100 transition">
+                <div class="w-16 h-16 bg-emerald-100 text-brand-600 rounded-full flex items-center justify-center mx-auto text-3xl">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h3 class="text-xl font-extrabold text-slate-800" id="regSuccTitle">Registration Successful</h3>
+                <p class="text-xs text-slate-600" id="regSuccBody">Registration completed successfully. Welcome to Kisan Dost express platform!</p>
+                <button onclick="closeRegSuccessModal()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl shadow transition">
+                    Go to Main Dashboard
+                </button>
+            </div>
+        </div>
+
+        <!-- MODAL 2: BOOKING CONFIRMATION & PAYMENT -->
+        <div id="modalBooking" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+            <div class="bg-white rounded-3xl p-6 max-w-lg w-full space-y-4 shadow-2xl relative my-8">
+                <button onclick="closeBookingModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                
+                <div class="border-b border-slate-100 pb-3">
+                    <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Fast Booking Dispatch</span>
+                    <h3 id="bookModalTitle" class="text-xl font-bold text-slate-800 mt-1">Book Rice Transplanter</h3>
+                    <p id="bookModalProvider" class="text-xs text-slate-500">Provider: Sri Venkateshwara Farm Equipments</p>
+                </div>
+
+                <div class="space-y-3 text-xs">
+                    <!-- Urgent priority option -->
+                    <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl flex items-center justify-between">
+                        <div>
+                            <span class="font-bold text-amber-900">Emergency Dispatch (< 30 Mins)</span>
+                            <p class="text-[11px] text-amber-700">Priority allocation for immediate harvest needs</p>
+                        </div>
+                        <input type="checkbox" id="bookUrgentCheck" checked class="w-5 h-5 accent-brand-600 rounded">
+                    </div>
+
+                    <!-- Date & Hours/Acres -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Required Date</label>
+                            <input type="date" id="bookDate" class="w-full p-2 border rounded-lg text-xs bg-slate-50">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Estimated Hours/Acres</label>
+                            <input type="number" id="bookQuantity" value="2" min="1" max="50" oninput="calculateBookingCost()" class="w-full p-2 border rounded-lg text-xs bg-slate-50">
+                        </div>
+                    </div>
+
+                    <!-- FIELD & DELIVERY LOCATION DETAILS -->
+                    <div class="bg-emerald-50/70 p-3 rounded-xl border border-emerald-200 space-y-2">
+                        <p class="font-bold text-slate-800 text-xs flex items-center gap-1">
+                            <i class="fa-solid fa-location-dot text-brand-600"></i> Farm Field Location Details
+                        </p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Village / Gram Panchayat</label>
+                                <input type="text" id="bookVillage" placeholder="e.g. Rampur" class="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Landmark / Survey No.</label>
+                                <input type="text" id="bookLandmark" placeholder="e.g. Near Canal / Sy No. 142" class="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cost Breakdown -->
+                    <div class="bg-slate-50 p-3 rounded-xl space-y-1.5 border border-slate-200">
+                        <div class="flex justify-between text-slate-600">
+                            <span>Base Rate:</span>
+                            <span id="bookBaseRateDisplay">₹800 / hr</span>
+                        </div>
+                        <div class="flex justify-between font-bold text-slate-800 text-sm pt-1 border-t border-slate-200">
+                            <span>Total Payable Amount:</span>
+                            <span id="bookTotalCostDisplay" class="text-brand-600">₹1,600</span>
+                        </div>
+                    </div>
+
+                    <!-- Provider Direct Contact -->
+                    <div class="flex items-center justify-between bg-emerald-50 p-3 rounded-xl border border-emerald-200">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-brand-600 text-white flex items-center justify-center">
+                                <i class="fa-solid fa-phone text-xs"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-800 text-xs" id="bookOperatorName">Operator: Mallesh Reddy</p>
+                                <p class="text-[10px] text-slate-500" id="bookOperatorPhone">+91 98480 12345</p>
+                            </div>
+                        </div>
+                        <button onclick="simulatePhoneCall()" class="bg-brand-600 hover:bg-brand-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow">
+                            Call Provider
+                        </button>
+                    </div>
+
+                    <!-- Payment Option (COD vs Online) -->
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Select Payment Mode</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="border-2 border-brand-500 bg-brand-50/50 p-2.5 rounded-xl flex items-center space-x-2 cursor-pointer">
+                                <input type="radio" name="paymentMode" value="COD" checked onclick="togglePaymentView('COD')" class="accent-brand-600">
+                                <div>
+                                    <p class="font-bold text-slate-800 text-xs">Cash on Delivery</p>
+                                    <p class="text-[10px] text-slate-500">Pay operator after work</p>
+                                </div>
+                            </label>
+                            <label class="border border-slate-300 p-2.5 rounded-xl flex items-center space-x-2 cursor-pointer hover:bg-slate-50">
+                                <input type="radio" name="paymentMode" value="ONLINE" onclick="togglePaymentView('ONLINE')" class="accent-brand-600">
+                                <div>
+                                    <p class="font-bold text-slate-800 text-xs">Online Demo (UPI/QR)</p>
+                                    <p class="text-[10px] text-slate-500">GPay, PhonePe, Cards</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Online Demo Box -->
+                    <div id="onlinePaymentBox" class="hidden bg-slate-100 p-3 rounded-xl text-center space-y-2 border border-slate-200">
+                        <p class="text-xs font-semibold text-slate-700">Scan Demo UPI QR Code to Pay</p>
+                        <div class="w-24 h-24 bg-white border border-slate-300 mx-auto rounded-lg flex items-center justify-center text-slate-400">
+                            <i class="fa-solid fa-qrcode text-5xl text-brand-600"></i>
+                        </div>
+                        <p class="text-[10px] text-slate-500">This is a realistic demo gateway mode.</p>
+                    </div>
+                </div>
+
+                <button onclick="confirmBooking()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl shadow-lg transition duration-200 text-sm">
+                    Confirm & Dispatch Machinery
+                </button>
+            </div>
+        </div>
+
+        <!-- MODAL 3: CALL SIMULATION MODAL -->
+        <div id="modalCallSim" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-slate-900 text-white rounded-3xl p-6 max-w-xs w-full text-center space-y-6 shadow-2xl border border-slate-700">
+                <div class="w-20 h-20 bg-brand-600 rounded-full flex items-center justify-center mx-auto shadow-xl animate-pulse">
+                    <i class="fa-solid fa-phone text-3xl text-amber-300"></i>
+                </div>
+                <div>
+                    <h3 id="callSimName" class="text-lg font-bold">Equipment Provider</h3>
+                    <p id="callSimNum" class="text-xs text-slate-400 mt-1">+91 98480 12345</p>
+                    <p class="text-xs text-emerald-400 font-medium mt-2 animate-bounce">Calling Operator...</p>
+                </div>
+                <button onclick="closeCallModal()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl shadow">
+                    End Call
+                </button>
+            </div>
+        </div>
+
+        <!-- MODAL 4: CHANGE LOCATION MODAL -->
+        <div id="modalChangeLocation" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
+                <div class="flex justify-between items-center border-b pb-2">
+                    <h3 class="font-bold text-slate-800 text-base">Update Location</h3>
+                    <button onclick="closeLocationModal()" class="text-slate-400 hover:text-slate-600">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">District</label>
+                        <select id="modalDistrict" onchange="handleModalDistrictChange(this.value)" class="w-full p-2 border rounded-lg text-xs bg-white">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Mandal</label>
+                        <select id="modalMandal" class="w-full p-2 border rounded-lg text-xs bg-white">
+                        </select>
+                    </div>
+                </div>
+                <button onclick="saveLocationChange()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-xl text-xs shadow">
+                    Save New Location
+                </button>
+            </div>
+        </div>
+
+        <!-- MODAL 5: SUBMIT CUSTOMER REVIEW MODAL -->
+        <div id="modalSubmitReview" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl relative">
+                <button onclick="closeReviewModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                
+                <div class="border-b border-slate-100 pb-3">
+                    <h3 class="text-lg font-bold text-slate-800">Rate & Review Work</h3>
+                    <p id="reviewModalSubtitle" class="text-xs text-slate-500">Provide feedback for completed machinery or service</p>
+                </div>
+
+                <div class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Select Rating (1 to 5 Stars)</label>
+                        <div class="flex items-center space-x-2 text-2xl text-amber-400 py-1" id="starRatingInput">
+                            <i class="fa-solid fa-star cursor-pointer hover:scale-110 transition" onclick="setReviewRating(1)"></i>
+                            <i class="fa-solid fa-star cursor-pointer hover:scale-110 transition" onclick="setReviewRating(2)"></i>
+                            <i class="fa-solid fa-star cursor-pointer hover:scale-110 transition" onclick="setReviewRating(3)"></i>
+                            <i class="fa-solid fa-star cursor-pointer hover:scale-110 transition" onclick="setReviewRating(4)"></i>
+                            <i class="fa-solid fa-star cursor-pointer hover:scale-110 transition" onclick="setReviewRating(5)"></i>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Your Review Comment</label>
+                        <textarea id="reviewComment" rows="3" placeholder="How was the equipment performance, operator punctuality and work quality?" class="w-full p-2.5 border border-slate-300 rounded-xl text-xs outline-none focus:ring-2 focus:ring-brand-500 bg-slate-50"></textarea>
+                    </div>
+                </div>
+
+                <button onclick="submitCustomerReview()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl shadow-lg transition text-xs">
+                    Submit Review & Finish
+                </button>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="bg-brand-700 text-emerald-200 text-xs py-6 mt-10 border-t border-brand-600">
+            <div class="max-w-5xl mx-auto px-4 text-center space-y-2">
+                <div class="flex items-center justify-center space-x-2 font-bold text-white text-sm">
+                    <i class="fa-solid fa-tractor text-amber-300"></i>
+                    <span>Kisan Dost (किसान दोस्त)</span>
+                </div>
+                <p class="text-emerald-300">Empowering Farmers with Urgent On-Demand Machinery & Agricultural Mechanics</p>
+                <p class="text-[10px] text-emerald-400/80">© 2026 Kisan Dost Telangana Agri Tech. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const TELANGANA_DATA = {
+            "Adilabad": ["Bheempoor", "Jainad", "Bela", "Gudihathnur", "Adilabad Rural", "Adilabad Urban", "Mavala", "Tamsi", "Talamadugu", "Bazarhathnoor", "Boath", "Neradigonda", "Ichoda", "Sirikonda", "Utnur", "Sonala", "Sathnala", "Bhoraj"],
+            "Kumuram Bheem Asifabad": ["Jainoor", "Sirpur (U)", "Lingapur", "Tiryani", "Rebbena", "Asifabad", "Kerameri", "Wankidi", "Kagaznagar", "Sirpur (T)", "Kouthala", "Chintalamanepally", "Bejjur", "Penchikalpet", "Dahegaon"],
+            "Mancherial": ["Jannaram", "Dandepally", "Luxettipet", "Hajipur", "Kasipet", "Tandur", "Bheemini", "Kannepalli", "Vemanpalli", "Nennal", "Bellampalle", "Mandamarri", "Mancherial", "Naspur", "Jaipur", "Bheemaram", "Chennur", "Kotapalli", "Asnad", "Parpally"],
+            "Nirmal": ["Kubeer", "Tanoor", "Basar", "Mudhole", "Bhainsa", "Kuntala", "Narsapur (G)", "Lokeshwaram", "Dilawarpur", "Sarangapur", "Nirmal Urban", "Nirmal Rural", "Soan", "Laxmanchanda", "Mamada", "Pembi", "Khanapur", "Kaddampeddur", "Dasturabad", "Ponkal", "Malegaon", "Beltaroda", "Beeravelli"],
+            "Nizamabad": ["Navipet", "Nandipet", "Armur", "Balkonda", "Mupkal", "Mendora", "Yergatla", "Kammarpalle", "Mortad", "Vailpur", "Jakranpalle", "Makloor", "Nizamabad North", "Yedapalle", "Ranjal", "Bodhan", "Kotgiri", "Rudrur", "Varni", "Nizamabad Rural", "Nizamabad South", "Mugpal", "Dichpalle", "Indalwai", "Dharpalle", "Bheemgal", "Aloor", "Donkeshwar", "Sirkonda", "Mosra", "Saloora", "Pothangal", "Ramadugu"],
+            "Jagtial": ["Ibrahimpatnam", "Mallapur", "Raikal", "Beerpur", "Sarangapur", "Dharmapuri", "Buggaram", "Jagtial Rural", "Jagtial", "Medipalle", "Koratla", "Metpalle", "Kathlapur", "Kodimial", "Mallial", "Pegadapalle", "Gollapalle", "Velgatoor", "Endapalli", "Bandalingapur"],
+            "Peddapalli": ["Dharmaram", "Palakurthy", "Anthergoan", "Ramagundam", "Ramagiri", "Kamanpur", "Peddapalli", "Julapalle", "Elgaid", "Sultanabad", "Odela", "Srirampur", "Mutharam (Manthani)", "Manthani"],
+            "Jayashankar Bhupalpally": ["Bhupalpalle", "Kataram", "Mahadevpur", "Palmela", "Mutharam (Mahadevpur)", "Malharrao", "Chityal", "Tekumatla", "Mogullapalle", "Regonda", "Ghanapur (Mulug)", "Kothapallygori"],
+            "Bhadradri Kothagudem": ["Karakagudem", "Pinapaka", "Charla", "Dummugudem", "Aswapuram", "Manuguru", "Allapalli", "Gundala", "Yellandu", "Tekulapalle", "Julurpad", "Chandrugonda", "Annapureddypally", "Chunchupally", "Sujathanagar", "Kothagudem", "Laxmidevipalli", "Palvancha", "Mulakalapalle", "Dammapeta", "Aswaraopeta", "Burgampahad", "Bhadrachalam"],
+            "Mahabubabad": ["Kothaguda", "Gangavaram", "Bayyaram", "Garla", "Dornakal", "Kuravi", "Mahabubabad", "Gudur", "Kesamudram", "Nellikudur", "Narsimhulapet", "Chinnagudur", "Maripeda", "Danthalapalle", "Thorrur", "Peddavangara", "Seerole", "Inugurthy"],
+            "Warangal": ["Narsampet", "Duggondi", "Nallabelly", "Narsampet-area mandals", "Khanapur", "Chennaraopeta", "Nekkonda", "Geesugonda", "Sangem", "Wardhannapet", "Raiparthy", "Parvathagiri", "Khilla Warangal", "Warangal"],
+            "Hanumakonda": ["Bheemadevarapalle", "Velair", "Elkathurthi", "Kamalapur", "Hasanparthy", "Dharmasagar", "Khazipet", "Hanumakonda", "Inavole", "Nellikudur/Parakala-area administration", "Parakala", "Damera"],
+            "Karimnagar": ["Gangadhara", "Ramadugu", "Choppadandi", "Karimnagar Rural-I", "Karimnagar Rural-II", "Ganneruvaram", "Karimnagar", "Manakondur", "Thimmapur", "Chigurumamidi", "V. Saidapur", "Shankarapatnam", "Veenavanka", "Huzurabad", "Jammikunta", "Ellandakunta"],
+            "Rajanna Sircilla": ["Sircilla", "Rudrangi", "Chandurthi", "Vemulawada Rural", "Boinpalle", "Veernapalle", "Yellareddypeta", "Konaraopeta", "Gambhiraopeta", "Mustabad", "Thangallapalle", "Ellanthakunta", "Vemulawada"],
+            "Kamareddy": ["Madnur", "Jukkal", "Pedda Kodapgal", "Bichkunda", "Birkoor", "Nasurullabad", "Banswada", "Pitlam", "Nizamsagar", "Naga Reddipet", "Yellareddy", "Lingampet", "Gandhari", "Sadasivanagar", "Tadwai", "Rajampet", "Bhiknoor", "Kamareddy", "Ramareddy", "Machareddy", "Domakonda", "Bibipet", "Dongli", "Mohammadnagar", "Palvancha"],
+            "Sangareddy": ["Andole", "Vatpalle", "Pulkal", "Chowtakur", "Kangti", "Sirgapoor", "Kalher", "Narayankhed", "Nagalgidda", "Manoor", "Tadkal", "Nizampet", "Munipally", "Sadasivpet", "Kondapur", "Sangareddy", "Hathnoora", "Gummadidala", "Jinnaram", "Kandi", "Patancheru", "Ameenpur", "Ramachandrapuram", "Zahirabad", "Raikode", "Nyalkal", "Mogudampally", "Kohir", "Jharasangam"],
+            "Medak": ["Shankarampet-A", "Regode", "Alladurg", "Tekmal", "Papannapet", "Havelighanpur", "Ramayampet", "Nizampet", "Chegunta", "Narsingi", "Shankarampet-R", "Medak", "Kulcharam", "Chilipched", "Kowdipalle", "Narsapur", "Shivampet", "Yeldurthy", "Tupran", "Manoharabad", "Masaipet"],
+            "Siddipet": ["Dubbak", "Siddipet Rural", "Chinnakodur", "Nanganur", "Siddipet Urban", "Thoguta", "Mirdoddi", "Doultabad", "Gajwel", "Komuravelli", "Cheriyal", "Narayanraopet", "Raipole", "Wargal", "Markook", "Jagadevpur", "Kondapak", "Kukunoorpally", "Maddur", "Husnabad", "Bejjanki", "Koheda", "Akkannapeta", "Dhoolmitta", "Mulug", "Akbarpet-Bhoompally"],
+            "Jangaon": ["Ganpur (Station)", "Chilpur", "Zaffergadh", "Palakurthi", "Raghunathpalle", "Narmetta", "Bachannapeta", "Jangaon", "Lingalaghanpur", "Devaruppula", "Kodakandla", "Tharigoppula"],
+            "Yadadri Bhuvanagiri": ["Turkapalle", "Rajapet", "Alair", "Motakondur", "Yadagirigutta", "Bhongiri", "Bommalaramaram", "Bibinagar", "Pochampalle", "Choutuppal", "Narayanapur", "Ramannapeta", "Valigonda", "Atmakur (M)", "Mothkur", "Addagudur", "Gundala"],
+            "Medchal–Malkajgiri": ["Medchal", "Dundigal-Gandimaisamma", "Bachupally", "Quthbullapur", "Kukatpally", "Balanagar", "Alwal", "Malkajgiri", "Uppal", "Medipally", "Kapra", "Shamirpet", "Keesara", "Ghatkesar", "Muduchinthalapally"],
+            "Hyderabad": ["Amberpet", "Himayatnagar", "Nampally", "Asifnagar", "Khairatabad", "Golkonda", "Bahadurpura", "Bandlaguda", "Charminar", "Saidabad", "Ameerpet", "Secunderabad", "Tirumalgiri", "Maredpally", "Musheerabad", "Shaikpet"],
+            "Rangareddy": ["Shankarpalle", "Gandipet", "Moinabad", "Chevella", "Shabad", "Rajendranagar", "Shamshabad", "Kothur", "Nandigama", "Farooqnagar", "Kondurg", "Jilled Chowdergudem", "Kandukur", "Maheshwaram", "Balapur", "Saroornagar", "Hayathnagar", "Abdullapurmet", "Ibrahimpatnam", "Manchal", "Yacharam", "Madgul", "Amangal", "Talakondapalle", "Keshampet", "Kadthal", "Muduchinthalapally-area administration", "Irwin"],
+            "Vikarabad": ["Marpalle", "Mominpet", "Nawabpet", "Vikarabad", "Pudur", "Pargi", "Kulkacharla", "Doma", "Bomraspet", "Dharur", "Kotepally", "Bantwaram", "Peddemul", "Tandur", "Basheerabad", "Yelal", "Kodangal", "Doulatabad", "Chowdapur", "Dudyal"],
+            "Mahabubnagar": ["Chinna Chinta Kunta", "Koilkonda", "Gandeed", "Hanwada", "Mahabubnagar Rural", "Devarkadara", "Addakal", "Musapet", "Bhoothpur", "Mahabubnagar Urban", "Nawabpet", "Balanagar", "Rajapur", "Jadcherla", "Midjil", "Mohammadabad", "Koukuntla"],
+            "Jogulamba Gadwal": ["Kaloor-Timmanadoddi", "Dharur", "Gadwal", "Itikyal", "Maldakal", "Ghattu", "Aiza", "Rajoli", "Waddepalle", "Manopad", "Undavelli", "Alampur", "Yerravalli"],
+            "Wanaparthy": ["Amarchinta", "Madanapur", "Peddamandadi", "Ghanpur", "Gopalpeta", "Revally", "Pangal", "Wanaparthy", "Kothakota", "Atmakur", "Pebbair", "Srirangapur", "Weepangandla", "Chinnambavi", "Yedula"],
+            "Nagarkurnool": ["Thimmajipeta", "Bijinapalle", "Nagarkurnool", "Tadoor", "Urkonda", "Veldanda", "Charakonda", "Vangoor", "Kalwakurthy", "Telkapalle", "Uppunuthala", "Achampet", "Amrabad", "Padra", "Balmoor", "Lingal", "Peddakothapalle", "Kodair", "Kollapur", "Pentlavelli"],
+            "Nalgonda": ["Chityala", "Narketpalle", "Kattangoor", "Saligouraram", "Nakrekal", "Kethepalle", "Thipparthi", "Nalgonda", "Kangal", "Munugode", "Chandur", "Marriguda", "Chinthapalle", "Nampalle", "Gurrampode", "Anumula (Haliya)", "Nidamanur", "Tripuraram", "Madugulapally", "Vemulapalle", "Miryalaguda", "Damaracherla", "Adavidevulapalle", "Tirumalagiri (Sagar)", "Peddavoora", "Pedda Adiserlapalle", "Neredugommu", "Kondamallapalle", "Devarakonda", "Gundlapalle", "Chandampet", "Ammanabolu", "Ghattuppal"],
+            "Suryapet": ["Nagaram", "Thirumalagiri", "Thungathurthy", "Maddirala", "Noothankal", "Jajireddygudem", "Suryapet", "Atmakur (S)", "Mothey", "Chivvemla", "Penpahad", "Munagala", "Nadigudem", "Ananthagiri", "Kodad", "Chilkur", "Garidepally", "Neredcherla", "Palakeedu", "Mattampally", "Huzurnagar", "Mellacheruvu", "Chinthalapalem"],
+            "Khammam": ["Singareni", "Kamepalle", "Raghunadhapalem", "Khammam Rural", "Thirumalayapalem", "Kusumanchi", "Nelakondapalle", "Mudigonda", "Chinthakani", "Khammam Urban", "Konijerla", "Enkuru", "Kalluru", "Penuballi", "Sathupalle", "Vemsoor", "Thallada", "Wyra", "Bonakal", "Madhira", "Yerrupalem"],
+            "Mulugu": ["Venkatapur", "Mulug", "Govindaraopet", "Tadvai", "Eturnagaram", "Kannaigudem", "Wazeed", "Venkatapuram", "Mangapet", "Sammakka Saralamma"],
+            "Narayanpet": ["Damaragidda", "Narayanpet", "Utkoor", "Maganoor", "Krishna", "Makthal", "Narva", "Marikal", "Dhanwada", "Maddur", "Kosgi", "Gundumal", "Kothapalle"]
+        };
+
+        const MACHINERY_CATEGORIES = [
+            { id: 'rice_transplanter', name: 'Rice Transplanter', icon: 'fa-wheat-awn', desc: 'Paddy planting machinery for speedy transplantation', price: '₹700 / hr' },
+            { id: 'drone_fertilizer', name: 'Drone Fertilizer', icon: 'fa-plane-fly', desc: 'High-tech liquid fertilizing & pesticide drone spraying', price: '₹400 / acre' },
+            { id: 'cultivators', name: 'Cultivators', icon: 'fa-drumstick-bite', desc: 'Soil tilling & preparation equipment', price: '₹600 / hr' },
+            { id: 'rotavators', name: 'Rotavators', icon: 'fa-fan', desc: 'Heavy duty secondary tillage & soil mixing', price: '₹800 / hr' },
+            { id: 'ploughs', name: 'Ploughs', icon: 'fa-align-left', desc: 'Deep soil turning & furrowing machines', price: '₹650 / hr' },
+            { id: 'tractor', name: 'Tractor (High HP)', icon: 'fa-tractor', desc: '45-75 HP heavy tractors for all farm operations', price: '₹900 / hr' },
+            { id: 'harvester', name: 'Harvester', icon: 'fa-wheat-awn-circle-exclamation', desc: 'Combine harvester for paddy, maize & wheat', price: '₹1,800 / hr' },
+            { id: 'paddy_loader', name: 'Paddy Loader Machine', icon: 'fa-box-archive', desc: 'Fast grain loading for transport trucks', price: '₹500 / hr' },
+            { id: 'paddy_cleaner', name: 'Paddy Cleaning Machine', icon: 'fa-filter', desc: 'Chaff & husk removal from harvested paddy', price: '₹450 / hr' },
+            { id: 'power_tiller', name: 'Power Tiller', icon: 'fa-gears', desc: 'Compact walk-behind tillers for wet paddy fields', price: '₹500 / hr' },
+            { id: 'bund_trimmer', name: 'Bund Trimming Machine', icon: 'fa-scissors', desc: 'Field bund shaping & weed trimming', price: '₹400 / hr' },
+            { id: 'other_machinery', name: 'Other Farm Machinery', icon: 'fa-screwdriver-wrench', desc: 'Threshers, seed drills & customized equipment', price: '₹550 / hr' }
+        ];
+
+        const SERVICE_CATEGORIES = [
+            { id: 'tractor_services', name: 'Tractor Services', icon: 'fa-tractor', desc: 'Professional tractor drivers & field tilling operators', price: '₹500 / visit' },
+            { id: 'machinery_services', name: 'Machinery Repairs', icon: 'fa-wrench', desc: 'On-site mobile mechanics for heavy farm machines', price: '₹350 / visit' },
+            { id: 'agri_electrician', name: 'Agri Electrician', icon: 'fa-bolt', desc: '3-Phase motor starter, transformer & line fixes', price: '₹300 / visit' },
+            { id: 'motor_mechanic', name: 'Motor Mechanic', icon: 'fa-gears', desc: 'Submersible pump motor rewind & repair expert', price: '₹400 / visit' },
+            { id: 'bore_mechanic', name: 'Bore Mechanic', icon: 'fa-bore-hole', desc: 'Borewell pipe removal, flushing & compressor services', price: '₹800 / visit' },
+            { id: 'drivers', name: 'Equipment Drivers', icon: 'fa-id-card', desc: 'Experienced heavy machinery & harvester operators', price: '₹600 / day' }
+        ];
+
+        const SAMPLE_PROVIDERS = [
+            { id: 'p1', name: 'Sri Venkateshwara Agri Tech', operator: 'Srinivas Rao', phone: '+91 98480 12345', distance: 2.1, rating: 4.8, reviews: 42, rate: 800, specs: 'Mahindra 575 DI (50 HP) + Operator', urgent: true },
+            { id: 'p2', name: 'Kisan Express Machinery Hub', operator: 'Mallesh Goud', phone: '+91 94401 88231', distance: 4.5, rating: 4.6, reviews: 29, rate: 750, specs: 'John Deere 5050D + High Capacity', urgent: true },
+            { id: 'p3', name: 'Raitu Mitra Services', operator: 'Anjaneyulu Reddy', phone: '+91 99892 33104', distance: 6.8, rating: 4.9, reviews: 68, rate: 850, specs: 'Kubota Combine Harvester 4WD', urgent: false },
+            { id: 'p4', name: 'Telangana Drone Agro', operator: 'Praveen Kumar', phone: '+91 91210 55490', distance: 3.2, rating: 4.7, reviews: 18, rate: 400, specs: '10L Automated Payload Drone', urgent: true },
+            { id: 'p5', name: 'Jai Kisan Heavy Repairs', operator: 'Bhikshapathi (Mechanic)', phone: '+91 97011 22908', distance: 1.8, rating: 4.9, reviews: 84, rate: 350, specs: 'Mobile Mechanic Van with Spare Parts', urgent: true }
+        ];
+
+        const TRANSLATIONS = {
+            en: {
+                navSubtitle: "Fast Agricultural Services",
+                changeLocText: "Change",
+                authTitle: "Farmer Registration",
+                authSubtitle: "Register once to instantly book machinery & services",
+                labelName: "Full Name",
+                labelMobile: "Mobile Number",
+                labelDistrict: "District",
+                labelMandal: "Mandal",
+                btnRegisterText: "Complete Registration & Enter",
+                emergBadge: "Urgent Harvest Priority",
+                emergTitle: "Urgent Farm Booking Required?",
+                emergDesc: "Need immediate machinery or mechanics for sudden crop harvesting or repairs? Get matched with nearby providers within 15-30 minutes.",
+                btnEmergAction: "Emergency Express Search",
+                tabMachineryLabel: "Machineries",
+                tabServicesLabel: "Services & Mechanics",
+                btnBackToCat: "Back to Categories",
+                btnBackProfile: "Back to Dashboard",
+                titleBookingHist: "My Emergency Bookings & Service Requests",
+                regSuccTitle: "Registration Successful",
+                regSuccBody: "Registration completed successfully. Welcome to Kisan Dost express platform!"
+            },
+            te: {
+                navSubtitle: "అత్యవసర వ్యవసాయ యంత్రాల బుకింగ్",
+                changeLocText: "మార్చండి",
+                authTitle: "రైతు నమోదు",
+                authSubtitle: "యంత్రాలు మరియు సేవలను వెంటనే బుక్ చేయడానికి ఒకసారి నమోదు చేసుకోండి",
+                labelName: "పూర్తి పేరు",
+                labelMobile: "మొబైల్ నంబర్",
+                labelDistrict: "జిల్లా",
+                labelMandal: "మండలం",
+                btnRegisterText: "నమోదు పూర్తి చేసి ప్రవేశించండి",
+                emergBadge: "అత్యవసర కోత ప్రాధాన్యత",
+                emergTitle: "అత్యవసరంగా యంత్రాలు కావాలా?",
+                emergDesc: "పంట కోతకు లేదా మరమ్మతులకు వెంటనే యంత్రాలు లేదా మెకానిక్‌లు కావాలా? 15-30 నిమిషాల్లో సమీప సర్వీస్ పొందుతారు.",
+                btnEmergAction: "అత్యవసర ఎక్స్‌ప్రెస్ సెర్చ్",
+                tabMachineryLabel: "వ్యవసాయ యంత్రాలు",
+                tabServicesLabel: "సేవలు & మెకానిక్స్",
+                btnBackToCat: "కేటగిరీలకు తిరిగి వెళ్లండి",
+                btnBackProfile: "డాష్‌బోర్డ్‌కు తిరిగి వెళ్లండి",
+                titleBookingHist: "నా బుకింగ్‌లు & అత్యవసర విజ్ఞప్తులు",
+                regSuccTitle: "నమోదు విజయవంతమైంది",
+                regSuccBody: "మీ వివరాలు విజయవంతంగా నమోదు చేయబడ్డాయి. కిసాన్ దోస్త్‌కు స్వాగతం!"
+            },
+            hi: {
+                navSubtitle: "त्वरित कृषि उपकरण और सेवाएं",
+                changeLocText: "बदलें",
+                authTitle: "किसान पंजीकरण",
+                authSubtitle: "उपकरण और सेवाओं को तुरंत बुक करने के लिए एक बार पंजीकरण करें",
+                labelName: "पूरा नाम",
+                labelMobile: "मोबाइल नंबर",
+                labelDistrict: "जिला",
+                labelMandal: "मंडल",
+                btnRegisterText: "पंजीकरण पूरा करें और प्रवेश करें",
+                emergBadge: "आपातकालीन फसल कटाई",
+                emergTitle: "क्या तत्काल कृषि उपकरण चाहिए?",
+                emergDesc: "अचानक फसल कटाई या मरम्मत के लिए तुरंत मशीनरी चाहिए? 15-30 मिनट में नजदीकी प्रदाताओं से जुड़ें।",
+                btnEmergAction: "आपातकालीन एक्सप्रेस खोज",
+                tabMachineryLabel: "कृषि मशीनरी",
+                tabServicesLabel: "सेवाएं एवं मैकेनिक",
+                btnBackToCat: "श्रेणियों पर वापस जाएं",
+                btnBackProfile: "डैशबोर्ड पर वापस जाएं",
+                titleBookingHist: "मेरी आपातकालीन बुकिंग और अनुरोध",
+                regSuccTitle: "पंजीकरण सफल रहा",
+                regSuccBody: "पंजीकरण सफलतापूर्वक पूरा हुआ। किसान दोस्त में आपका स्वागत है!"
+            }
+        };
+
+        let appState = {
+            lang: 'en',
+            user: null,
+            activeTab: 'machineries', // 'machineries' or 'services'
+            selectedCategory: null,
+            selectedProvider: null,
+            userBookings: [],
+            userReviews: [],
+            activeReviewBookingId: null,
+            selectedRatingVal: 5
+        };
+
+        window.onload = function() {
+            // Populate District Dropdowns
+            populateDistrictDropdowns();
+
+            // Simulate Splash Screen Transition
+            setTimeout(() => {
+                const splash = document.getElementById('splashScreen');
+                const app = document.getElementById('appContainer');
+                
+                splash.style.opacity = '0';
+                setTimeout(() => {
+                    splash.classList.add('hidden');
+                    app.classList.remove('hidden');
+                }, 800);
+            }, 1800);
+
+            // Render default categories
+            renderCategories();
+        };
+
+        function populateDistrictDropdowns() {
+            const regDistSelect = document.getElementById('regDistrict');
+            const modalDistSelect = document.getElementById('modalDistrict');
+            
+            const districts = Object.keys(TELANGANA_DATA).sort();
+            
+            let optionsHtml = '<option value="">-- Select Telangana District --</option>';
+            districts.forEach(dist => {
+                optionsHtml += `<option value="${dist}">${dist}</option>`;
+            });
+
+            regDistSelect.innerHTML = optionsHtml;
+            modalDistSelect.innerHTML = optionsHtml;
+        }
+
+        function handleDistrictChange(selectedDistrict) {
+            const mandalSelect = document.getElementById('regMandal');
+            const districtError = document.getElementById('districtError');
+            
+            districtError.classList.add('hidden');
+
+            if (!selectedDistrict || !TELANGANA_DATA[selectedDistrict]) {
+                mandalSelect.innerHTML = '<option value="">-- Select District First --</option>';
+                mandalSelect.disabled = true;
+                return;
+            }
+
+            const mandals = TELANGANA_DATA[selectedDistrict];
+            let optionsHtml = '<option value="">-- Select Mandal --</option>';
+            mandals.forEach(mandal => {
+                optionsHtml += `<option value="${mandal}">${mandal}</option>`;
+            });
+
+            mandalSelect.innerHTML = optionsHtml;
+            mandalSelect.disabled = false;
+        }
+
+        function handleModalDistrictChange(selectedDistrict) {
+            const mandalSelect = document.getElementById('modalMandal');
+            if (!selectedDistrict || !TELANGANA_DATA[selectedDistrict]) {
+                mandalSelect.innerHTML = '<option value="">-- Select District First --</option>';
+                return;
+            }
+
+            const mandals = TELANGANA_DATA[selectedDistrict];
+            let optionsHtml = '<option value="">-- Select Mandal --</option>';
+            mandals.forEach(mandal => {
+                optionsHtml += `<option value="${mandal}">${mandal}</option>`;
+            });
+
+            mandalSelect.innerHTML = optionsHtml;
+        }
+
+        function validateName() {
+            const nameInput = document.getElementById('regName');
+            const error = document.getElementById('nameError');
+            const nameRegex = /^[A-Za-z\s]+$/;
+
+            if (nameInput.value.trim() !== '' && !nameRegex.test(nameInput.value.trim())) {
+                error.classList.remove('hidden');
+                return false;
+            } else {
+                error.classList.add('hidden');
+                return true;
+            }
+        }
+
+        function validateMobile() {
+            const mobileInput = document.getElementById('regMobile');
+            const error = document.getElementById('mobileError');
+            const mobileRegex = /^[0-9]{10}$/;
+
+            if (mobileInput.value.trim() !== '' && !mobileRegex.test(mobileInput.value.trim())) {
+                error.classList.remove('hidden');
+                return false;
+            } else {
+                error.classList.add('hidden');
+                return true;
+            }
+        }
+
+        function handleRegistration(event) {
+            event.preventDefault();
+
+            const nameVal = document.getElementById('regName').value.trim();
+            const mobileVal = document.getElementById('regMobile').value.trim();
+            const districtVal = document.getElementById('regDistrict').value;
+            const mandalVal = document.getElementById('regMandal').value;
+
+            let isValid = true;
+
+            // Name validation
+            if (!nameVal || !/^[A-Za-z\s]+$/.test(nameVal)) {
+                document.getElementById('nameError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('nameError').classList.add('hidden');
+            }
+
+            // Mobile validation
+            if (!mobileVal || !/^[0-9]{10}$/.test(mobileVal)) {
+                document.getElementById('mobileError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('mobileError').classList.add('hidden');
+            }
+
+            // District validation
+            if (!districtVal) {
+                document.getElementById('districtError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('districtError').classList.add('hidden');
+            }
+
+            // Mandal validation
+            if (!mandalVal) {
+                document.getElementById('mandalError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('mandalError').classList.add('hidden');
+            }
+
+            if (!isValid) return;
+
+            // Save user profile state
+            appState.user = {
+                name: nameVal,
+                mobile: mobileVal,
+                district: districtVal,
+                mandal: mandalVal
+            };
+
+            // Update UI elements
+            document.getElementById('navLocationText').innerText = `${mandalVal}, ${districtVal} Dist`;
+            document.getElementById('userLocationBar').classList.remove('hidden');
+
+            document.getElementById('profUserName').innerText = nameVal;
+            document.getElementById('profUserMobile').innerText = `+91 ${mobileVal}`;
+            document.getElementById('profUserLocation').innerText = `${mandalVal}, ${districtVal} Dist`;
+
+            // Show success popup modal
+            document.getElementById('modalRegSuccess').classList.remove('hidden');
+        }
+
+        function closeRegSuccessModal() {
+            document.getElementById('modalRegSuccess').classList.add('hidden');
+            document.getElementById('authView').classList.add('hidden');
+            navigateTo('dashboard');
+        }
+
+        function navigateTo(viewName) {
+            const views = ['authView', 'dashboardView', 'listingsView', 'profileView'];
+            views.forEach(v => {
+                document.getElementById(v).classList.add('hidden');
+            });
+
+            if (viewName === 'auth') {
+                document.getElementById('authView').classList.remove('hidden');
+            } else if (viewName === 'dashboard') {
+                document.getElementById('dashboardView').classList.remove('hidden');
+            } else if (viewName === 'listings') {
+                document.getElementById('listingsView').classList.remove('hidden');
+            } else if (viewName === 'profile') {
+                renderUserBookings();
+                renderUserReviews();
+                document.getElementById('profileView').classList.remove('hidden');
+            }
+        }
+
+        function changeLanguage(langKey) {
+            appState.lang = langKey;
+            const dict = TRANSLATIONS[langKey] || TRANSLATIONS['en'];
+
+            Object.keys(dict).forEach(key => {
+                const elem = document.getElementById(key);
+                if (elem) {
+                    elem.innerText = dict[key];
+                }
+            });
+        }
+
+        function switchCategoryTab(tab) {
+            appState.activeTab = tab;
+            const machBtn = document.getElementById('tabMachineries');
+            const servBtn = document.getElementById('tabServices');
+            const machGrid = document.getElementById('machineryCategoryGrid');
+            const servGrid = document.getElementById('servicesCategoryGrid');
+
+            if (tab === 'machineries') {
+                machBtn.className = 'flex-1 py-3 px-4 rounded-xl font-bold text-sm sm:text-base transition duration-200 flex items-center justify-center space-x-2 bg-brand-600 text-white shadow';
+                servBtn.className = 'flex-1 py-3 px-4 rounded-xl font-bold text-sm sm:text-base transition duration-200 flex items-center justify-center space-x-2 text-slate-600 hover:text-brand-600 hover:bg-slate-50';
+                machGrid.classList.remove('hidden');
+                servGrid.classList.add('hidden');
+            } else {
+                servBtn.className = 'flex-1 py-3 px-4 rounded-xl font-bold text-sm sm:text-base transition duration-200 flex items-center justify-center space-x-2 bg-brand-600 text-white shadow';
+                machBtn.className = 'flex-1 py-3 px-4 rounded-xl font-bold text-sm sm:text-base transition duration-200 flex items-center justify-center space-x-2 text-slate-600 hover:text-brand-600 hover:bg-slate-50';
+                servGrid.classList.remove('hidden');
+                machGrid.classList.add('hidden');
+            }
+        }
+
+        function renderCategories() {
+            const machGrid = document.getElementById('machineryCategoryGrid');
+            const servGrid = document.getElementById('servicesCategoryGrid');
+
+            let machHtml = '';
+            MACHINERY_CATEGORIES.forEach(item => {
+                machHtml += `
+                    <div onclick="selectCategory('${item.id}', '${item.name}', 'machinery')" class="bg-white hover:bg-emerald-50/50 p-4 rounded-2xl border border-slate-200 hover:border-brand-500 shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between group">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-brand-600 group-hover:bg-brand-600 group-hover:text-white transition flex items-center justify-center text-xl mb-3 shadow-inner">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-sm group-hover:text-brand-600 transition">${item.name}</h3>
+                            <p class="text-[11px] text-slate-500 line-clamp-2 mt-1">${item.desc}</p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
+                            <span class="text-xs font-bold text-brand-600">${item.price}</span>
+                            <span class="text-[10px] bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full">Available</span>
+                        </div>
+                    </div>
+                `;
+            });
+            machGrid.innerHTML = machHtml;
+
+            let servHtml = '';
+            SERVICE_CATEGORIES.forEach(item => {
+                servHtml += `
+                    <div onclick="selectCategory('${item.id}', '${item.name}', 'service')" class="bg-white hover:bg-emerald-50/50 p-4 rounded-2xl border border-slate-200 hover:border-brand-500 shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between group">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 group-hover:bg-amber-500 group-hover:text-white transition flex items-center justify-center text-xl mb-3 shadow-inner">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-sm group-hover:text-brand-600 transition">${item.name}</h3>
+                            <p class="text-[11px] text-slate-500 line-clamp-2 mt-1">${item.desc}</p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
+                            <span class="text-xs font-bold text-brand-600">${item.price}</span>
+                            <span class="text-[10px] bg-amber-100 text-amber-800 font-semibold px-2 py-0.5 rounded-full">On-Demand</span>
+                        </div>
+                    </div>
+                `;
+            });
+            servGrid.innerHTML = servHtml;
+        }
+
+        function selectCategory(catId, catName, type) {
+            appState.selectedCategory = { id: catId, name: catName, type: type };
+            document.getElementById('listingCategoryTitle').innerText = catName;
+            renderProviders('all');
+            navigateTo('listings');
+        }
+
+        function triggerEmergencyMode() {
+            // Priority default to Harvester or first machinery item
+            selectCategory('harvester', 'Combine Harvester (Emergency Dispatch)', 'machinery');
+        }
+
+        function filterProviders(filterType) {
+            renderProviders(filterType);
+        }
+
+        function renderProviders(filterType) {
+            const listContainer = document.getElementById('providersList');
+            let data = [...SAMPLE_PROVIDERS];
+
+            if (filterType === 'distance') {
+                data.sort((a, b) => a.distance - b.distance);
+            } else if (filterType === 'rating') {
+                data.sort((a, b) => b.rating - a.rating);
+            }
+
+            document.getElementById('listingCount').innerText = `${data.length} providers available in ${appState.user ? appState.user.mandal : 'your mandal'}`;
+
+            let html = '';
+            data.forEach(p => {
+                html += `
+                    <div class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md border border-slate-200 transition space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-12 h-12 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-lg shrink-0">
+                                    <i class="fa-solid fa-user-check"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                                        <span>${p.name}</span>
+                                        ${p.urgent ? '<span class="bg-rose-100 text-rose-700 text-[10px] px-2 py-0.5 rounded-full font-extrabold uppercase">Express < 30m</span>' : ''}
+                                    </h3>
+                                    <p class="text-xs text-slate-500">Operator: <span class="font-semibold text-slate-700">${p.operator}</span></p>
+                                    <p class="text-[11px] text-slate-400 mt-0.5">${p.specs}</p>
+                                </div>
+                            </div>
+                            <div class="text-left sm:text-right shrink-0">
+                                <span class="text-lg font-black text-brand-600">₹${p.rate}</span>
+                                <span class="text-xs text-slate-500"> / hr</span>
+                                <div class="flex items-center sm:justify-end text-amber-500 text-xs mt-1">
+                                    <i class="fa-solid fa-star mr-1"></i>
+                                    <span class="font-bold text-slate-800">${p.rating}</span>
+                                    <span class="text-slate-400 text-[10px] ml-1">(${p.reviews} reviews)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs">
+                            <div class="flex items-center space-x-3 text-slate-600">
+                                <span><i class="fa-solid fa-location-arrow text-brand-500 mr-1"></i>${p.distance} km away</span>
+                                <span><i class="fa-solid fa-shield-halved text-emerald-600 mr-1"></i>Verified Dost</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="openBookingModal('${p.id}')" class="bg-brand-600 hover:bg-brand-700 text-white font-bold px-4 py-2 rounded-xl shadow transition text-xs">
+                                    Book Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            listContainer.innerHTML = html;
+        }
+
+        function openBookingModal(providerId) {
+            const provider = SAMPLE_PROVIDERS.find(p => p.id === providerId) || SAMPLE_PROVIDERS[0];
+            appState.selectedProvider = provider;
+
+            const categoryName = appState.selectedCategory ? appState.selectedCategory.name : 'Machinery';
+            document.getElementById('bookModalTitle').innerText = `Book ${categoryName}`;
+            document.getElementById('bookModalProvider').innerText = `Provider: ${provider.name}`;
+            document.getElementById('bookOperatorName').innerText = `Operator: ${provider.operator}`;
+            document.getElementById('bookOperatorPhone').innerText = provider.phone;
+            document.getElementById('bookBaseRateDisplay').innerText = `₹${provider.rate} / hr`;
+
+            // Default date to today & prefill village with user mandal if set
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('bookDate').value = today;
+            document.getElementById('bookVillage').value = appState.user ? appState.user.mandal : '';
+            document.getElementById('bookLandmark').value = '';
+
+            calculateBookingCost();
+
+            document.getElementById('modalBooking').classList.remove('hidden');
+        }
+
+        function closeBookingModal() {
+            document.getElementById('modalBooking').classList.add('hidden');
+        }
+
+        function calculateBookingCost() {
+            const qty = parseInt(document.getElementById('bookQuantity').value) || 1;
+            const rate = appState.selectedProvider ? appState.selectedProvider.rate : 800;
+            const total = qty * rate;
+            document.getElementById('bookTotalCostDisplay').innerText = `₹${total.toLocaleString('en-IN')}`;
+        }
+
+        function togglePaymentView(mode) {
+            const onlineBox = document.getElementById('onlinePaymentBox');
+            if (mode === 'ONLINE') {
+                onlineBox.classList.remove('hidden');
+            } else {
+                onlineBox.classList.add('hidden');
+            }
+        }
+
+        function simulatePhoneCall() {
+            const provider = appState.selectedProvider || SAMPLE_PROVIDERS[0];
+            document.getElementById('callSimName').innerText = provider.operator;
+            document.getElementById('callSimNum').innerText = provider.phone;
+            document.getElementById('modalCallSim').classList.remove('hidden');
+        }
+
+        function closeCallModal() {
+            document.getElementById('modalCallSim').classList.add('hidden');
+        }
+
+        function confirmBooking() {
+            const date = document.getElementById('bookDate').value;
+            const qty = document.getElementById('bookQuantity').value;
+            const village = document.getElementById('bookVillage').value.trim() || (appState.user ? appState.user.mandal : 'Main Village');
+            const landmark = document.getElementById('bookLandmark').value.trim() || 'Near Farm Main Road';
+            const isUrgent = document.getElementById('bookUrgentCheck').checked;
+            const paymentMode = document.querySelector('input[name="paymentMode"]:checked').value;
+            const provider = appState.selectedProvider;
+            const categoryName = appState.selectedCategory ? appState.selectedCategory.name : 'Machinery';
+
+            const newBooking = {
+                id: 'KB-' + Math.floor(100000 + Math.random() * 900000),
+                category: categoryName,
+                provider: provider.name,
+                operator: provider.operator,
+                phone: provider.phone,
+                date: date,
+                quantity: qty,
+                village: village,
+                landmark: landmark,
+                cost: parseInt(qty) * provider.rate,
+                urgent: isUrgent,
+                paymentMode: paymentMode,
+                status: 'Confirmed - On the Way',
+                reviewed: false,
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+
+            appState.userBookings.unshift(newBooking);
+
+            closeBookingModal();
+            alert(`Emergency Booking Confirmed!\nLocation: ${village} (${landmark})\nBooking ID: ${newBooking.id}`);
+            
+            navigateTo('profile');
+        }
+
+        function cancelBooking(bookingId) {
+            if (confirm("Are you sure you want to cancel this emergency booking?")) {
+                const booking = appState.userBookings.find(b => b.id === bookingId);
+                if (booking) {
+                    booking.status = 'Cancelled';
+                    renderUserBookings();
+                }
+            }
+        }
+
+        /* CUSTOMER REVIEWS & SERVICE COMPLETION LOGIC */
+        function openReviewModal(bookingId) {
+            appState.activeReviewBookingId = bookingId;
+            const booking = appState.userBookings.find(b => b.id === bookingId);
+            if (booking) {
+                document.getElementById('reviewModalSubtitle').innerText = `Rate & Review service for ${booking.category} (${booking.provider})`;
+            }
+            setReviewRating(5);
+            document.getElementById('reviewComment').value = '';
+            document.getElementById('modalSubmitReview').classList.remove('hidden');
+        }
+
+        function closeReviewModal() {
+            document.getElementById('modalSubmitReview').classList.add('hidden');
+        }
+
+        function setReviewRating(rating) {
+            appState.selectedRatingVal = rating;
+            const stars = document.querySelectorAll('#starRatingInput i');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.className = 'fa-solid fa-star cursor-pointer hover:scale-110 transition text-amber-400';
+                } else {
+                    star.className = 'fa-regular fa-star cursor-pointer hover:scale-110 transition text-slate-300';
+                }
+            });
+        }
+
+        function submitCustomerReview() {
+            const comment = document.getElementById('reviewComment').value.trim() || 'Work completed on time. Machine operator was cooperative and efficient.';
+            const booking = appState.userBookings.find(b => b.id === appState.activeReviewBookingId);
+
+            if (booking) {
+                booking.status = 'Completed';
+                booking.reviewed = true;
+
+                const newReview = {
+                    id: 'REV-' + Math.floor(1000 + Math.random() * 9000),
+                    bookingId: booking.id,
+                    category: booking.category,
+                    provider: booking.provider,
+                    rating: appState.selectedRatingVal,
+                    comment: comment,
+                    date: new Date().toLocaleDateString()
+                };
+
+                appState.userReviews.unshift(newReview);
+            }
+
+            closeReviewModal();
+            renderUserBookings();
+            renderUserReviews();
+            alert("Thank you! Your review and feedback have been submitted successfully.");
+        }
+
+        function renderUserBookings() {
+            const container = document.getElementById('userBookingsList');
+
+            if (appState.userBookings.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-slate-400 space-y-2">
+                        <i class="fa-solid fa-calendar-xmark text-4xl"></i>
+                        <p class="text-xs">No active or past bookings found.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            appState.userBookings.forEach(b => {
+                const isCancelled = b.status === 'Cancelled';
+                const isCompleted = b.status === 'Completed';
+
+                html += `
+                    <div class="p-4 rounded-xl border ${isCancelled ? 'bg-slate-50 border-slate-200' : isCompleted ? 'bg-amber-50/40 border-amber-200' : 'bg-emerald-50/50 border-emerald-200'} flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div class="space-y-1 text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-slate-800 text-sm">${b.category}</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isCancelled ? 'bg-slate-200 text-slate-600' : isCompleted ? 'bg-amber-200 text-amber-800' : 'bg-emerald-200 text-brand-700'}">${b.status}</span>
+                            </div>
+                            <p class="text-slate-600">Provider: <strong>${b.provider}</strong> (${b.operator})</p>
+                            <p class="text-slate-500">
+                                <i class="fa-solid fa-location-dot text-brand-500 mr-1"></i>
+                                Field Location: <strong>${b.village}</strong> (${b.landmark})
+                            </p>
+                            <p class="text-slate-500">Date: ${b.date} | Payment: <strong>${b.paymentMode}</strong></p>
+                            <p class="text-brand-600 font-bold">Total: ₹${b.cost.toLocaleString('en-IN')}</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2 shrink-0">
+                            ${!isCancelled && !isCompleted ? `
+                                <button onclick="simulatePhoneCall()" class="bg-brand-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow">
+                                    <i class="fa-solid fa-phone mr-1"></i> Call Operator
+                                </button>
+                                <button onclick="openReviewModal('${b.id}')" class="bg-amber-500 hover:bg-amber-600 text-slate-900 px-3 py-1.5 rounded-lg text-xs font-bold shadow">
+                                    <i class="fa-solid fa-check-double mr-1"></i> Done & Review
+                                </button>
+                                <button onclick="cancelBooking('${b.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 px-3 py-1.5 rounded-lg text-xs font-bold">
+                                    Cancel
+                                </button>
+                            ` : isCompleted ? `
+                                <span class="text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded-lg font-bold flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-check text-amber-600"></i> Work Done & Reviewed
+                                </span>
+                            ` : '<span class="text-xs text-slate-400 italic">Booking Cancelled</span>'}
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderUserReviews() {
+            const container = document.getElementById('userReviewsList');
+
+            if (appState.userReviews.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-6 text-slate-400 space-y-1">
+                        <i class="fa-regular fa-comment-dots text-3xl"></i>
+                        <p class="text-xs">No reviews given yet. Complete a booking to rate services.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            appState.userReviews.forEach(r => {
+                let starsHtml = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= r.rating) {
+                        starsHtml += '<i class="fa-solid fa-star text-amber-400"></i>';
+                    } else {
+                        starsHtml += '<i class="fa-regular fa-star text-slate-300"></i>';
+                    }
+                }
+
+                html += `
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1 text-xs">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-slate-800">${r.category} — ${r.provider}</span>
+                            <div class="flex items-center space-x-1 text-xs">${starsHtml}</div>
+                        </div>
+                        <p class="text-slate-600 italic">"${r.comment}"</p>
+                        <p class="text-[10px] text-slate-400 text-right">Reviewed on ${r.date}</p>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function openLocationChangeModal() {
+            document.getElementById('modalChangeLocation').classList.remove('hidden');
+        }
+
+        function closeLocationModal() {
+            document.getElementById('modalChangeLocation').classList.add('hidden');
+        }
+
+        function saveLocationChange() {
+            const dist = document.getElementById('modalDistrict').value;
+            const mand = document.getElementById('modalMandal').value;
+
+            if (dist && mand) {
+                if (appState.user) {
+                    appState.user.district = dist;
+                    appState.user.mandal = mand;
+                }
+                document.getElementById('navLocationText').innerText = `${mand}, ${dist} Dist`;
+                document.getElementById('profUserLocation').innerText = `${mand}, ${dist} Dist`;
+                closeLocationModal();
+            }
+        }
+
+        function logoutUser() {
+            if (confirm("Are you sure you want to log out?")) {
+                appState.user = null;
+                document.getElementById('userLocationBar').classList.add('hidden');
+                document.getElementById('authForm').reset();
+                document.getElementById('regMandal').innerHTML = '<option value="">-- Select District First --</option>';
+                document.getElementById('regMandal').disabled = true;
+                navigateTo('auth');
+            }
+        }
+    </script>
+</body>
+</html>
