@@ -1,6 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- PWA Manifest Link -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#12372A">
+<link rel="apple-touch-icon" href="/logo.png">
+
+<!-- Supabase Client Library CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // 1. Service Worker Registration
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+  }
+
+  // 2. Initialize Supabase
+  const SUPABASE_URL = "https://thfdaggkttdozdwgwxqd.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRoZmRhZ2drdHRkb3pkd2d3eHFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzNTIzMTgsImV4cCI6MjEwNTkyODMxOH0.ZQEGOIedrfiwcGLc3sMWjSxTIAMYyj3OCyRKGp6xmQE";
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // 3. Send Live Login Data to Database
+  async function saveUserToSupabase(name, mobile, district, mandal) {
+    const { data, error } = await supabase
+      .from('app_users')
+      .insert([{ name, mobile, district, mandal }]);
+    if (error) console.error("Database save error:", error);
+  }
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kisan Dost - Urgent Farm Machinery & Services Booking</title>
